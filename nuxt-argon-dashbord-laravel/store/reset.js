@@ -10,11 +10,11 @@ export const actions = {
         type: "token",
         attributes: {
           email: data.attributes.email,
-          password: data.attributes.password
-        }
-      }
+          password: data.attributes.password,
+        },
+      },
     };
 
     this.$auth.loginWith("local", { data: loginData });
-  }
+  },
 };
