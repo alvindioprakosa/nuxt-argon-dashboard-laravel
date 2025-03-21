@@ -190,15 +190,15 @@
 <script>
 import ValidationError from "~/components/ValidationError.vue";
 import formMixin from "@/mixins/form-mixin";
-import Password from 'vue-password-strength-meter'
-import BaseCheckbox from '~/components/argon-core/Inputs/BaseCheckbox.vue'
+import Password from "vue-password-strength-meter";
+import BaseCheckbox from "~/components/argon-core/Inputs/BaseCheckbox.vue";
 
-  export default {
-    layout: 'AuthLayout',
-    name: 'register',
-    mixins: [formMixin],
-    components: { ValidationError, Password, BaseCheckbox  },
-    auth: "guest",
+export default {
+  layout: "AuthLayout",
+  name: "register",
+  mixins: [formMixin],
+  components: { ValidationError, Password, BaseCheckbox },
+  auth: "guest",
 
   data() {
     return {
