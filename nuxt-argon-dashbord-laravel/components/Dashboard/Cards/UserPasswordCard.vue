@@ -27,11 +27,7 @@
         />
 
         <div class="my-4">
-          <base-button
-            type="button"
-            class="btn btn-sm btn-primary"
-            native-type="submit"
-          >
+          <base-button class="btn btn-sm btn-primary" native-type="submit">
             Change Password
           </base-button>
         </div>
@@ -39,11 +35,12 @@
     </div>
   </div>
 </template>
+
 <script>
 import BaseInput from "~/components/argon-core/Inputs/BaseInput.vue";
 import BaseButton from "~/components/argon-core/BaseButton.vue";
-import formMixin from "@/mixins/form-mixin";
 import ValidationError from "~/components/ValidationError.vue";
+import formMixin from "@/mixins/form-mixin";
 
 export default {
   name: "UserPasswordCard",
@@ -57,32 +54,38 @@ export default {
   mixins: [formMixin],
 
   props: {
-    user: Object,
+    user: {
+      type: Object,
+      required: true,
+    },
   },
 
   data() {
     return {
-      password: null,
-      password_new: null,
-      password_confirmation: null,
+      password: "",
+      password_confirmation: "",
     };
   },
 
   methods: {
     async handleChangePassword() {
-      if (["1"].includes(this.user.id)) {
-        await this.$notify({
+      if (parseInt(this.user.id) === 1) {
+        this.$notify({
           type: "danger",
-          message: "You are not allowed not change data of default users.",
+          message: "You are not allowed to change data of default users.",
         });
         return;
       }
 
-      this.user.password = this.password;
-      this.user.password_confirmation = this.password_confirmation;
+      const payload = {
+        ...this.user,
+        password: this.password,
+        password_confirmation: this.password_confirmation,
+      };
+
       try {
-        await this.$store.dispatch("users/update", this.user);
-        this.$refs["password_form"].reset();
+        await this.$store.dispatch("users/update", payload);
+        this.$refs.password_form.reset();
         this.unsetApiValidationErrors();
 
         this.$notify({
@@ -94,7 +97,7 @@ export default {
           type: "danger",
           message: "Oops, something went wrong!",
         });
-        this.setApiValidation(error.response.data.errors);
+        this.setApiValidation(error.response?.data?.errors || {});
       }
     },
   },
